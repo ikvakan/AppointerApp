@@ -1,0 +1,430 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Appointment">
+          <Key>
+            <PropertyRef Name="IdAppointment" />
+          </Key>
+          <Property Name="IdAppointment" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Time" Type="datetime" Nullable="false" />
+          <Property Name="Duration" Type="int" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar(max)" />
+          <Property Name="WorkerIdWorker" Type="int" Nullable="false" />
+          <Property Name="ClientIdClient" Type="int" Nullable="false" />
+          <Property Name="ServiceIdService" Type="int" Nullable="false" />
+          <Property Name="StatusIdStatus" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="IdClient" />
+          </Key>
+          <Property Name="IdClient" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Contact" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Adress" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="OIB" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="City" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="IdService" />
+          </Key>
+          <Property Name="IdService" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="Duration" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Service_TypeIdServiceType" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Service_Type">
+          <Key>
+            <PropertyRef Name="IdServiceType" />
+          </Key>
+          <Property Name="IdServiceType" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="IdStatus" />
+          </Key>
+          <Property Name="IdStatus" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Worker">
+          <Key>
+            <PropertyRef Name="IdWorker" />
+          </Key>
+          <Property Name="IdWorker" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Contact" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ClientAppointment">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Appointment" Type="Self.Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="IdClient" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="ClientIdClient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Service_TypeService">
+          <End Role="Service_Type" Type="Self.Service_Type" Multiplicity="1" />
+          <End Role="Service" Type="Self.Service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service_Type">
+              <PropertyRef Name="IdServiceType" />
+            </Principal>
+            <Dependent Role="Service">
+              <PropertyRef Name="Service_TypeIdServiceType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceAppointment">
+          <End Role="Service" Type="Self.Service" Multiplicity="1" />
+          <End Role="Appointment" Type="Self.Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="IdService" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="ServiceIdService" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StatusAppointment">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="Appointment" Type="Self.Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="IdStatus" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="StatusIdStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WorkerAppointment">
+          <End Role="Worker" Type="Self.Worker" Multiplicity="1" />
+          <End Role="Appointment" Type="Self.Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Worker">
+              <PropertyRef Name="IdWorker" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="WorkerIdWorker" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Appointment" EntityType="Self.Appointment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Service" EntityType="Self.Service" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Service_Type" EntityType="Self.Service_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Worker" EntityType="Self.Worker" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ClientAppointment" Association="Self.FK_ClientAppointment">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Appointment" EntitySet="Appointment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Service_TypeService" Association="Self.FK_Service_TypeService">
+            <End Role="Service_Type" EntitySet="Service_Type" />
+            <End Role="Service" EntitySet="Service" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceAppointment" Association="Self.FK_ServiceAppointment">
+            <End Role="Service" EntitySet="Service" />
+            <End Role="Appointment" EntitySet="Appointment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StatusAppointment" Association="Self.FK_StatusAppointment">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Appointment" EntitySet="Appointment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WorkerAppointment" Association="Self.FK_WorkerAppointment">
+            <End Role="Worker" EntitySet="Worker" />
+            <End Role="Appointment" EntitySet="Appointment" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="ModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Service_Type" EntityType="Model.Service_Type" />
+          <EntitySet Name="Service" EntityType="Model.Service" />
+          <EntitySet Name="Worker" EntityType="Model.Worker" />
+          <EntitySet Name="Appointment" EntityType="Model.Appointment" />
+          <EntitySet Name="Client" EntityType="Model.Client" />
+          <AssociationSet Name="WorkerAppointment" Association="Model.WorkerAppointment">
+            <End Role="Worker" EntitySet="Worker" />
+            <End Role="Appointment" EntitySet="Appointment" />
+          </AssociationSet>
+          <AssociationSet Name="ClientAppointment" Association="Model.ClientAppointment">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Appointment" EntitySet="Appointment" />
+          </AssociationSet>
+          <AssociationSet Name="ServiceAppointment" Association="Model.ServiceAppointment">
+            <End Role="Service" EntitySet="Service" />
+            <End Role="Appointment" EntitySet="Appointment" />
+          </AssociationSet>
+          <AssociationSet Name="Service_TypeService" Association="Model.Service_TypeService">
+            <End Role="Service_Type" EntitySet="Service_Type" />
+            <End Role="Service" EntitySet="Service" />
+          </AssociationSet>
+          <FunctionImport Name="GetAppointmentForDataGrid" ReturnType="Collection(Model.GetAppointmentForDataGrid_Result)" />
+          <EntitySet Name="Status" EntityType="Model.Status" />
+          <AssociationSet Name="StatusAppointment" Association="Model.StatusAppointment">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Appointment" EntitySet="Appointment" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Service_Type">
+          <Key>
+            <PropertyRef Name="IdServiceType" />
+          </Key>
+          <Property Name="IdServiceType" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Service" Relationship="Model.Service_TypeService" FromRole="Service_Type" ToRole="Service" />
+        </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="IdService" />
+          </Key>
+          <Property Name="IdService" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="Duration" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Appointment" Relationship="Model.ServiceAppointment" FromRole="Service" ToRole="Appointment" />
+          <NavigationProperty Name="Service_Type" Relationship="Model.Service_TypeService" FromRole="Service" ToRole="Service_Type" />
+          <Property Name="Service_TypeIdServiceType" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Worker">
+          <Key>
+            <PropertyRef Name="IdWorker" />
+          </Key>
+          <Property Name="IdWorker" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Surname" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Contact" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Appointment" Relationship="Model.WorkerAppointment" FromRole="Worker" ToRole="Appointment" />
+        </EntityType>
+        <EntityType Name="Appointment">
+          <Key>
+            <PropertyRef Name="IdAppointment" />
+          </Key>
+          <Property Name="IdAppointment" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Duration" Type="Int32" Nullable="false" />
+          <Property Name="Remark" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Worker" Relationship="Model.WorkerAppointment" FromRole="Appointment" ToRole="Worker" />
+          <Property Name="WorkerIdWorker" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="Model.ClientAppointment" FromRole="Appointment" ToRole="Client" />
+          <Property Name="ClientIdClient" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Service" Relationship="Model.ServiceAppointment" FromRole="Appointment" ToRole="Service" />
+          <Property Name="ServiceIdService" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Status" Relationship="Model.StatusAppointment" FromRole="Appointment" ToRole="Status" />
+          <Property Name="StatusIdStatus" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="IdClient" />
+          </Key>
+          <Property Name="IdClient" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Surname" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Contact" Type="String" MaxLength="50" Unicode="true" FixedLength="false" Nullable="false" />
+          <Property Name="Adress" Type="String" MaxLength="100" Unicode="true" FixedLength="false" Nullable="false" />
+          <Property Name="OIB" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" Nullable="false" />
+          <NavigationProperty Name="Appointment" Relationship="Model.ClientAppointment" FromRole="Client" ToRole="Appointment" />
+          <Property Name="City" Type="String" Unicode="true" FixedLength="false" MaxLength="Max" Nullable="false" />
+        </EntityType>
+        <Association Name="WorkerAppointment">
+          <End Type="Model.Worker" Role="Worker" Multiplicity="1" />
+          <End Type="Model.Appointment" Role="Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Worker">
+              <PropertyRef Name="IdWorker" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="WorkerIdWorker" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ClientAppointment">
+          <End Type="Model.Client" Role="Client" Multiplicity="1" />
+          <End Type="Model.Appointment" Role="Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="IdClient" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="ClientIdClient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ServiceAppointment">
+          <End Type="Model.Service" Role="Service" Multiplicity="1" />
+          <End Type="Model.Appointment" Role="Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="IdService" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="ServiceIdService" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Service_TypeService">
+          <End Type="Model.Service_Type" Role="Service_Type" Multiplicity="1" />
+          <End Type="Model.Service" Role="Service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service_Type">
+              <PropertyRef Name="IdServiceType" />
+            </Principal>
+            <Dependent Role="Service">
+              <PropertyRef Name="Service_TypeIdServiceType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="GetAppointmentForDataGrid_Result">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Surname" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="Time" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Name1" Nullable="false" />
+          <Property Type="String" Name="Name2" Nullable="false" />
+          <Property Type="String" Name="Surname1" Nullable="false" />
+          <Property Type="String" Name="Status" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="IdStatus" />
+          </Key>
+          <Property Name="IdStatus" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Appointment" Relationship="Model.StatusAppointment" FromRole="Status" ToRole="Appointment" />
+        </EntityType>
+        <Association Name="StatusAppointment">
+          <End Type="Model.Status" Role="Status" Multiplicity="1" />
+          <End Type="Model.Appointment" Role="Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="IdStatus" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="StatusIdStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="ModelContainer">
+    <EntitySetMapping Name="Service_Type">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Service_Type)">
+        <MappingFragment StoreEntitySet="Service_Type">
+          <ScalarProperty Name="IdServiceType" ColumnName="IdServiceType" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Service">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Service)">
+        <MappingFragment StoreEntitySet="Service">
+          <ScalarProperty Name="IdService" ColumnName="IdService" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Duration" ColumnName="Duration" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Service_TypeIdServiceType" ColumnName="Service_TypeIdServiceType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Worker">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Worker)">
+        <MappingFragment StoreEntitySet="Worker">
+          <ScalarProperty Name="IdWorker" ColumnName="IdWorker" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Appointment">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Appointment)">
+        <MappingFragment StoreEntitySet="Appointment">
+          <ScalarProperty Name="IdAppointment" ColumnName="IdAppointment" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="Duration" ColumnName="Duration" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="WorkerIdWorker" ColumnName="WorkerIdWorker" />
+          <ScalarProperty Name="ClientIdClient" ColumnName="ClientIdClient" />
+          <ScalarProperty Name="ServiceIdService" ColumnName="ServiceIdService" />
+          <ScalarProperty Name="StatusIdStatus" ColumnName="StatusIdStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Client">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Client)">
+        <MappingFragment StoreEntitySet="Client">
+          <ScalarProperty Name="IdClient" ColumnName="IdClient" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Adress" ColumnName="Adress" />
+          <ScalarProperty Name="OIB" ColumnName="OIB" />
+          <ScalarProperty Name="City" ColumnName="City" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Status">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Status)">
+        <MappingFragment StoreEntitySet="Status">
+          <ScalarProperty Name="IdStatus" ColumnName="IdStatus" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
