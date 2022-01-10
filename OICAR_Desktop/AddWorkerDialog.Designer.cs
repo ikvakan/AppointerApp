@@ -115,7 +115,7 @@ namespace OICAR_Desktop
             // 
             // workerMDBindingSource
             // 
-            this.workerMDBindingSource.DataSource = typeof(OICAR_Desktop.Model.WorkerMD);
+            
             // 
             // txtEmail
             // 

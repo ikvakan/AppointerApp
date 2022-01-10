@@ -30,21 +30,15 @@ namespace OICAR_Desktop
         private void InitializeComponent()
         {
             this.label6 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txtRemark = new System.Windows.Forms.RichTextBox();
             this.dtpDate = new System.Windows.Forms.DateTimePicker();
-            this.cbClients = new System.Windows.Forms.ComboBox();
             this.cbStatus = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cbWorker = new System.Windows.Forms.ComboBox();
             this.cbDuration = new System.Windows.Forms.ComboBox();
             this.dtpTime = new System.Windows.Forms.DateTimePicker();
             this.btnClose = new System.Windows.Forms.Button();
-            this.cbService = new System.Windows.Forms.ComboBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -56,27 +50,17 @@ namespace OICAR_Desktop
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(427, 302);
+            this.label6.Location = new System.Drawing.Point(427, 263);
             this.label6.Name = "label6";
             this.label6.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.label6.Size = new System.Drawing.Size(37, 13);
             this.label6.TabIndex = 5;
             this.label6.Text = "Status";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(175, 301);
-            this.label2.Name = "label2";
-            this.label2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label2.Size = new System.Drawing.Size(40, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Usluga";
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(418, 246);
+            this.label3.Location = new System.Drawing.Point(421, 313);
             this.label3.Name = "label3";
             this.label3.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.label3.Size = new System.Drawing.Size(45, 13);
@@ -86,22 +70,12 @@ namespace OICAR_Desktop
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(421, 191);
+            this.label5.Location = new System.Drawing.Point(174, 308);
             this.label5.Name = "label5";
             this.label5.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.label5.Size = new System.Drawing.Size(44, 13);
             this.label5.TabIndex = 4;
             this.label5.Text = "Vrijeme ";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(174, 245);
-            this.label7.Name = "label7";
-            this.label7.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label7.Size = new System.Drawing.Size(48, 13);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Djelatnik";
             // 
             // label4
             // 
@@ -124,53 +98,25 @@ namespace OICAR_Desktop
             // 
             // dtpDate
             // 
-            this.dtpDate.Location = new System.Drawing.Point(254, 154);
+            this.dtpDate.Location = new System.Drawing.Point(257, 263);
             this.dtpDate.Name = "dtpDate";
             this.dtpDate.Size = new System.Drawing.Size(134, 20);
             this.dtpDate.TabIndex = 15;
-            // 
-            // cbClients
-            // 
-            this.cbClients.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbClients.FormattingEnabled = true;
-            this.cbClients.Location = new System.Drawing.Point(254, 186);
-            this.cbClients.Name = "cbClients";
-            this.cbClients.Size = new System.Drawing.Size(131, 21);
-            this.cbClients.TabIndex = 7;
             // 
             // cbStatus
             // 
             this.cbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStatus.FormattingEnabled = true;
-            this.cbStatus.Location = new System.Drawing.Point(507, 299);
+            this.cbStatus.Location = new System.Drawing.Point(507, 260);
             this.cbStatus.Name = "cbStatus";
             this.cbStatus.Size = new System.Drawing.Size(144, 21);
             this.cbStatus.TabIndex = 11;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(174, 190);
-            this.label1.Name = "label1";
-            this.label1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Klijent";
-            // 
-            // cbWorker
-            // 
-            this.cbWorker.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbWorker.FormattingEnabled = true;
-            this.cbWorker.Location = new System.Drawing.Point(254, 242);
-            this.cbWorker.Name = "cbWorker";
-            this.cbWorker.Size = new System.Drawing.Size(131, 21);
-            this.cbWorker.TabIndex = 12;
             // 
             // cbDuration
             // 
             this.cbDuration.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDuration.FormattingEnabled = true;
-            this.cbDuration.Location = new System.Drawing.Point(504, 243);
+            this.cbDuration.Location = new System.Drawing.Point(507, 310);
             this.cbDuration.Name = "cbDuration";
             this.cbDuration.Size = new System.Drawing.Size(147, 21);
             this.cbDuration.TabIndex = 9;
@@ -180,7 +126,7 @@ namespace OICAR_Desktop
             this.dtpTime.Cursor = System.Windows.Forms.Cursors.Default;
             this.dtpTime.CustomFormat = "HH:mm";
             this.dtpTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpTime.Location = new System.Drawing.Point(504, 190);
+            this.dtpTime.Location = new System.Drawing.Point(257, 307);
             this.dtpTime.Name = "dtpTime";
             this.dtpTime.ShowUpDown = true;
             this.dtpTime.Size = new System.Drawing.Size(147, 20);
@@ -201,15 +147,6 @@ namespace OICAR_Desktop
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // cbService
-            // 
-            this.cbService.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbService.FormattingEnabled = true;
-            this.cbService.Location = new System.Drawing.Point(254, 298);
-            this.cbService.Name = "cbService";
-            this.cbService.Size = new System.Drawing.Size(131, 21);
-            this.cbService.TabIndex = 8;
-            // 
             // btnSave
             // 
             this.btnSave.BackColor = System.Drawing.Color.SteelBlue;
@@ -227,7 +164,7 @@ namespace OICAR_Desktop
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(175, 154);
+            this.label8.Location = new System.Drawing.Point(178, 263);
             this.label8.Name = "label8";
             this.label8.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.label8.Size = new System.Drawing.Size(38, 13);
@@ -280,15 +217,9 @@ namespace OICAR_Desktop
             this.Controls.Add(this.cbDuration);
             this.Controls.Add(this.dtpDate);
             this.Controls.Add(this.cbStatus);
-            this.Controls.Add(this.cbService);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.cbClients);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.cbWorker);
             this.Name = "UpdateAppointmentDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "UpdateAppointmentDialog";
@@ -302,21 +233,15 @@ namespace OICAR_Desktop
         #endregion
 
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.RichTextBox txtRemark;
         private System.Windows.Forms.DateTimePicker dtpDate;
-        private System.Windows.Forms.ComboBox cbClients;
         private System.Windows.Forms.ComboBox cbStatus;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cbWorker;
         private System.Windows.Forms.ComboBox cbDuration;
         private System.Windows.Forms.DateTimePicker dtpTime;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.ComboBox cbService;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label10;

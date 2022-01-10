@@ -1,0 +1,4 @@
+﻿@model List<SelectListItem>
+@using WebApplication.Models
+
+@Html.DropDownList(nameof(ServiceTypeModel.IdServiceType), Model, htmlAttributes: new { @class = "form-control" })

@@ -1,0 +1,14 @@
+﻿@model ClassLibrary.Model.Working_Hours
+
+<div class="row text-center">
+    <h4><b>@Model.Day</b></h4>
+    @if (!Model.Is_NonWorking)
+    {
+        <h4>@Model.Start_Time.ToShortTimeString()h - @Model.End_Time.ToShortTimeString()h</h4>
+
+    }
+    else
+    {
+        <h4>NE RADIMO</h4>
+    }
+</div>

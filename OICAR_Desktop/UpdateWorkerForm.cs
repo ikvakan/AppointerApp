@@ -1,5 +1,6 @@
-﻿using OICAR_Desktop.DAL;
-using OICAR_Desktop.Model;
+﻿
+using ClassLibrary.DAL;
+using ClassLibrary.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,9 +19,11 @@ namespace OICAR_Desktop
         private UniteOfWork uow;
 
         private Worker _worker;
-        public UpdateWorkerForm(Worker worker)
+        private CompanyLogin _companyLogin;
+        public UpdateWorkerForm(Worker worker,CompanyLogin companyLogin)
         {
             _worker = worker;
+            _companyLogin = companyLogin;
             InitializeComponent();
             InitRepository();
             SetWorker();
@@ -60,12 +63,15 @@ namespace OICAR_Desktop
 
         private Worker GetWorker()
         {
+            var company = uow.Company.GetCompanyForUser(_companyLogin.IdCompanyLogin);
+
             Worker worker = new Worker();
             worker.IdWorker = _worker.IdWorker;
             worker.Name = txtName.Text;
             worker.Surname = txtSurname.Text;
             worker.Email = txtEmail.Text;
             worker.Contact = txtContact.Text;
+            worker.CompanyIdCompany = company.IdCompany;
 
             return worker;
         }

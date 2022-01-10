@@ -1,0 +1,40 @@
+﻿@using WebApplication.Models
+@using ClassLibrary.Model
+@model List<Service>
+
+
+<div class="panel panel-default">
+    <div id="servicePnl"class="panel-heading">
+        <h4  class="text-center "
+            data-toggle="collapse"
+            data-target="#collapseBody">
+            Odabrane usluge
+        </h4>
+    </div>
+
+    <div id="collapseBody" class="panel-collapse collapse in ">
+        <div  class="panel-body ">
+
+            @foreach (var item in Model)
+            {
+                <div class="text-center">
+                    <h5><b>@item.Name</b></h5>
+                    <h5>@item.Price kn</h5>
+                    <h5>@item.Duration min</h5>
+                    @Html.ActionLink("Ukloni", "DeleteService", "Home", new { idService = item.IdService }, new { @class = "btn btn-sm btn-danger" })
+
+                </div>
+                <hr />
+
+            }
+
+        </div>
+    </div>
+
+</div>
+
+<style>
+    #servicePnl {
+        cursor: pointer;
+    }
+</style>

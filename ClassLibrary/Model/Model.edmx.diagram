@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="dc1689bfd6c943b09adcc2916d70f3aa" Name="Diagram1" >
+        <EntityTypeShape EntityType="Model.Service_Type" Width="1.5" PointX="8.25" PointY="4.125" />
+        <EntityTypeShape EntityType="Model.Service" Width="2.375" PointX="11.75" PointY="4.5" />
+        <EntityTypeShape EntityType="Model.Worker" Width="1.5" PointX="7.75" PointY="8.5" />
+        <EntityTypeShape EntityType="Model.Appointment" Width="1.75" PointX="9.375" PointY="0.5" FillColor="Red" />
+        <EntityTypeShape EntityType="Model.Client" Width="1.5" PointX="2.875" PointY="1.875" />
+        <AssociationConnector Association="Model.ClientAppointment" ManuallyRouted="false" >
+        </AssociationConnector>
+        <EntityTypeShape EntityType="Model.Status" Width="1.5" PointX="12.5" PointY="0.625" />
+        <AssociationConnector Association="Model.StatusAppointment" />
+        <EntityTypeShape EntityType="Model.Company" Width="1.75" PointX="5.25" PointY="4.125" />
+        <EntityTypeShape EntityType="Model.Working_Hours" Width="1.875" PointX="4.875" PointY="9.25" />
+        <AssociationConnector Association="Model.CompanyWorking_Hours" />
+        <EntityTypeShape EntityType="Model.Category" Width="1.5" PointX="0.5" PointY="5" />
+        <AssociationConnector Association="Model.CategoryCompany" />
+        <EntityTypeShape EntityType="Model.ClientLogin" Width="1.5" PointX="0.5" PointY="2.375" FillColor="Yellow" />
+        <EntityTypeShape EntityType="Model.CompanyLogin" Width="1.5" PointX="2.625" PointY="6.875" FillColor="Yellow" />
+        <AssociationConnector Association="Model.CompanyLoginCompany" />
+        <AssociationConnector Association="Model.ClientLoginsClient" />
+        <AssociationConnector Association="Model.CompanyWorker" />
+        <AssociationConnector Association="Model.CompanyAppointment" />
+        <AssociationConnector Association="Model.CompanyService_Type" />
+        <AssociationConnector Association="Model.Service_TypeService" />
+        <EntityTypeShape EntityType="Model.ClientGDPR" Width="2.125" PointX="5.125" PointY="0.5" />
+        <AssociationConnector Association="Model.ClientGDPRClient" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

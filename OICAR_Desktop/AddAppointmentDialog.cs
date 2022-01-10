@@ -1,5 +1,7 @@
-﻿using OICAR_Desktop.DAL;
-using OICAR_Desktop.Model;
+﻿
+using ClassLibrary.DAL;
+using ClassLibrary.DAL.Interfaces;
+using ClassLibrary.Model;
 using OICAR_Desktop.Utility;
 using System;
 using System.Collections.Generic;
@@ -109,10 +111,10 @@ namespace OICAR_Desktop
             appointment.Date = DateTime.Parse(dtpDate.Value.ToShortDateString());
             appointment.Client = (Client)cbClients.SelectedItem;
             appointment.Time = DateTime.Parse(dtpTime.Value.ToShortTimeString());
-            appointment.Service = (Service)cbService.SelectedItem;
+            //appointment.Service = (Service)cbService.SelectedItem;
             appointment.Status = (Status)cbStatus.SelectedItem;
             appointment.Duration = (int)cbDuration.SelectedItem;
-            appointment.Worker = (Worker)cbWorker.SelectedItem;
+            //appointment.Worker = (Worker)cbWorker.SelectedItem;
             appointment.Remark = txtRemark.Text;
 
             return appointment;

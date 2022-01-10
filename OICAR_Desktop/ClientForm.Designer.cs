@@ -127,7 +127,7 @@ namespace OICAR_Desktop
             // 
             // bindingSource
             // 
-            this.bindingSource.DataSource = typeof(OICAR_Desktop.Model.Client);
+//            this.bindingSource.DataSource = typeof(ClassLibrary.Model.Client);
             // 
             // btnAddClient
             // 

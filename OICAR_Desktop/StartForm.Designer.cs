@@ -29,26 +29,11 @@ namespace OICAR_Desktop
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnUpisiTermin = new System.Windows.Forms.Button();
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.lblInfo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
-            // 
-            // btnUpisiTermin
-            // 
-            this.btnUpisiTermin.BackColor = System.Drawing.Color.SteelBlue;
-            this.btnUpisiTermin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnUpisiTermin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btnUpisiTermin.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnUpisiTermin.Location = new System.Drawing.Point(258, 491);
-            this.btnUpisiTermin.Name = "btnUpisiTermin";
-            this.btnUpisiTermin.Size = new System.Drawing.Size(266, 84);
-            this.btnUpisiTermin.TabIndex = 0;
-            this.btnUpisiTermin.Text = "Upiši termin";
-            this.btnUpisiTermin.UseVisualStyleBackColor = false;
-            this.btnUpisiTermin.Click += new System.EventHandler(this.btnUpisiTermin_Click);
             // 
             // monthCalendar1
             // 
@@ -84,11 +69,10 @@ namespace OICAR_Desktop
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(859, 624);
+            this.ClientSize = new System.Drawing.Size(859, 627);
             this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.monthCalendar1);
-            this.Controls.Add(this.btnUpisiTermin);
             this.Name = "StartForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PocetnaForm";
@@ -99,8 +83,6 @@ namespace OICAR_Desktop
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnUpisiTermin;
         private System.Windows.Forms.MonthCalendar monthCalendar1;
         private System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.Label lblInfo;

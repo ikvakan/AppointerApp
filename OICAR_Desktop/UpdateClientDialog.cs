@@ -1,5 +1,6 @@
-﻿using OICAR_Desktop.DAL;
-using OICAR_Desktop.Model;
+﻿
+using ClassLibrary.DAL;
+using ClassLibrary.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -67,6 +68,7 @@ namespace OICAR_Desktop
             client.Adress = txtAdress.Text;
             client.City = txtCity.Text;
             client.OIB = txtOib.Text;
+            client.ClientLoginsIdClientLogin = _client.ClientLoginsIdClientLogin;
             
             return client;
         }

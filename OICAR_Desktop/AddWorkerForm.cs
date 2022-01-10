@@ -1,5 +1,6 @@
-﻿using OICAR_Desktop.DAL;
-using OICAR_Desktop.Model;
+﻿
+using ClassLibrary.DAL;
+using ClassLibrary.Model;
 using OICAR_Desktop.Utility;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,10 @@ namespace OICAR_Desktop
     {
 
         private UniteOfWork uow;
-        public AddWorkerForm()
+        private Company _company;
+        public AddWorkerForm(Company company)
         {
+            _company = company;
             InitializeComponent();
             InitRepository();
             InitValidationDataSource();
@@ -77,6 +80,7 @@ namespace OICAR_Desktop
             worker.Surname = txtSurname.Text;
             worker.Email = txtEmail.Text;
             worker.Contact = txtContact.Text;
+            worker.CompanyIdCompany = _company.IdCompany;
             return worker;
         }
 

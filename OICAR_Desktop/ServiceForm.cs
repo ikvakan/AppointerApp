@@ -1,5 +1,6 @@
-﻿using OICAR_Desktop.DAL;
-using OICAR_Desktop.Model;
+﻿
+using ClassLibrary.DAL;
+using ClassLibrary.Model;
 using OICAR_Desktop.Utility;
 using System;
 using System.Collections.Generic;
@@ -21,8 +22,11 @@ namespace OICAR_Desktop
 
         private Panel _pnlContent;
 
-        public ServiceForm(Panel pnlContent)
+        private CompanyLogin _companyLogin;
+
+        public ServiceForm(Panel pnlContent, CompanyLogin companyLogin)
         {
+            _companyLogin = companyLogin;
             _pnlContent = pnlContent;
             InitializeComponent();
             InitRepository();
@@ -40,7 +44,9 @@ namespace OICAR_Desktop
 
         private void FillServiceList()
         {
-            lbServices.DataSource = uow.ServiceTypes.GetAll();
+            var company = uow.Company.GetCompanyForUser(_companyLogin.IdCompanyLogin);
+
+            lbServices.DataSource = uow.ServiceTypes.GetServiceTypeForCompany(company.IdCompany);
             lbServices.DisplayMember = nameof(Service_Type.Name);
             lbServices.ValueMember = nameof(Service_Type.IdServiceType);
         }
@@ -77,12 +83,14 @@ namespace OICAR_Desktop
         private void PopulateGrid(int idServiceType)
         {
 
+
             if (lbServices.Items.Count == 0)
             {
                 DisableGrid();
             }
             else
             {
+                var company = uow.Company.GetCompanyForUser(_companyLogin.IdCompanyLogin);
                 EnableGrid();
                 dataGridView.DataSource = uow.Services.GetServiceByServiceType(idServiceType);
                 SetupDataGrid();
@@ -134,21 +142,13 @@ namespace OICAR_Desktop
             var serviceType = lbServices.SelectedItem as Service_Type;
             var services = uow.Services.GetServiceByServiceType(serviceType.IdServiceType).ToList();
 
-           
 
-            var appointments = uow.Apponitments.GetAppointmentsByService(services).ToList();
+            DialogResult deleteServiceTypeResult = HelperMethods.DialogHelper("Želite li obrisati tip usluge ?", "Potvrda brisanja.", MessageBoxButtons.YesNo);
 
-
-            if (appointments.Count() > 0)
+            if (deleteServiceTypeResult == DialogResult.Yes)
             {
-                if (DialogResult.Yes == MessageBox.Show("Usluga postoji u zakazanom terminu, želite li obrisati i te termine ?", "Potvrda brisanja.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                try
                 {
-
-                    foreach (var item in appointments)
-                    {
-                        uow.Apponitments.Delete(item);
-
-                    }
                     foreach (var item in services)
                     {
                         uow.Services.Delete(item);
@@ -156,40 +156,78 @@ namespace OICAR_Desktop
 
                     uow.ServiceTypes.Delete(serviceType);
 
+                    uow.SaveChanges();
                 }
-            }
-            else
-            {
-                if (DialogResult.Yes == MessageBox.Show("Želite li obrisati tip usluge ?", "Potvrda brisanja.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                catch (Exception ex)
                 {
-                    foreach (var item in services)
-                    {
-                        uow.Services.Delete(item);
-                    }
-                    uow.ServiceTypes.Delete(serviceType);
+
+                    MessageBox.Show("Greška kod brisanja. \n" + ex.Message);
                 }
 
-            }
-
-            try
-            {
-                uow.SaveChanges();
-            }
-            catch (EntitySqlException ex)
-            {
-
-                MessageBox.Show("Greška" + ex.Message);
             }
 
 
             FillServiceList();
             GridCheck();
+
+            //var appointments = uow.Apponitments.GetAppointmentsByService(services).ToList();
+
+
+            //if (appointments.Count() > 0)
+            //{
+            //    if (DialogResult.Yes == MessageBox.Show("Usluga postoji u zakazanom terminu, želite li obrisati i te termine ?", "Potvrda brisanja.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+            //    {
+
+            //        foreach (var item in appointments)
+            //        {
+            //            uow.Apponitments.Delete(item);
+
+            //        }
+            //        foreach (var item in services)
+            //        {
+            //            uow.Services.Delete(item);
+            //        }
+
+            //        uow.ServiceTypes.Delete(serviceType);
+
+            //    }
+            //}
+            //else
+            //{
+            //    if (DialogResult.Yes == MessageBox.Show("Želite li obrisati tip usluge ?", "Potvrda brisanja.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+            //    {
+            //        foreach (var item in services)
+            //        {
+            //            uow.Services.Delete(item);
+            //        }
+            //        uow.ServiceTypes.Delete(serviceType);
+            //    }
+
+            //}
+
+            //try
+            //{
+            //    uow.SaveChanges();
+            //}
+            //catch (EntitySqlException ex)
+            //{
+
+            //    MessageBox.Show("Greška" + ex.Message);
+            //}
+
+
+
         }
+
+
+
+
+
 
         private void btnAddService_Click(object sender, EventArgs e)
         {
 
-            OpenFormHelper.OpenChildForm(new AddServiceForm(), _pnlContent);
+            OpenFormHelper.OpenChildForm(new AddServiceForm(_companyLogin), _pnlContent);
         }
 
 
@@ -206,47 +244,67 @@ namespace OICAR_Desktop
 
                 var id = int.Parse(item.Cells[0].Value.ToString());
                 var service = uow.Services.GetById(id);
-                var appointments = uow.Apponitments.Find(a => a.ServiceIdService == service.IdService);
 
+                DialogResult deleteServiceTypeResult = HelperMethods.DialogHelper("Želite li obrisati uslugu ?", "Potvrda brisanja.", MessageBoxButtons.YesNo);
 
-
-                if (appointments.Count() > 0)
+                if (deleteServiceTypeResult == DialogResult.Yes)
                 {
-                    if (DialogResult.Yes == MessageBox.Show("Usluga postoji u zakazanom terminu, želite li obrisati i te termine ?", "Potvrda brisanja.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
-                    {
-                        foreach (var appointment in appointments)
-                        {
-                            uow.Apponitments.Delete(appointment);
-                            uow.Services.Delete(service);
-
-                        }
-
-
-                    }
-                }
-                else
-                {
-                    if (DialogResult.Yes == MessageBox.Show("Želite li obrisati  uslugu ?", "Potvrda brisanja.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                    try
                     {
                         uow.Services.Delete(service);
 
+                        uow.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+
+                        MessageBox.Show("Greška kod brisanja. \n" + ex.Message);
                     }
 
                 }
 
+                RefreshGrid();
+
+
+                //    if (appointments.Count() > 0)
+                //    {
+                //        if (DialogResult.Yes == MessageBox.Show("Usluga postoji u zakazanom terminu, želite li obrisati i te termine ?", "Potvrda brisanja.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                //        {
+                //            foreach (var appointment in appointments)
+                //            {
+                //                uow.Apponitments.Delete(appointment);
+                //                uow.Services.Delete(service);
+
+                //            }
+
+
+                //        }
+                //    }
+                //    else
+                //    {
+                //        if (DialogResult.Yes == MessageBox.Show("Želite li obrisati  uslugu ?", "Potvrda brisanja.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                //        {
+                //            uow.Services.Delete(service);
+
+                //        }
+
+                //    }
+
+                //}
+
+                //try
+                //{
+                //    uow.SaveChanges();
+                //}
+                //catch (Exception ex)
+                //{
+
+                //    MessageBox.Show("Greška." + ex.Message);
+                //}
+
             }
 
-            try
-            {
-                uow.SaveChanges();
-            }
-            catch (Exception ex)
-            {
 
-                MessageBox.Show("Greška." + ex.Message);
-            }
-
-            RefreshGrid();
         }
 
         private void RefreshGrid()
@@ -262,31 +320,24 @@ namespace OICAR_Desktop
                 return;
             }
 
-
             foreach (DataGridViewRow item in dataGridView.SelectedRows)
             {
-
                 var id = int.Parse(item.Cells[0].Value.ToString());
                 var service = uow.Services.GetById(id);
                 var serviceType = lbServices.SelectedItem as Service_Type;
+                var company = uow.Company.GetCompanyForUser(_companyLogin.IdCompanyLogin);
 
-                UpdateServiceForm form = new UpdateServiceForm(service, serviceType);
+                UpdateServiceForm form = new UpdateServiceForm(service, serviceType,company);
 
                 OpenFormHelper.OpenChildForm(form, _pnlContent);
-
-
                 form.FormClosed += Form_FormClosed;
 
             }
 
-
         }
-
         private void Form_FormClosed(object sender, FormClosedEventArgs e)
         {
-
-            OpenFormHelper.OpenChildForm(new ServiceForm(_pnlContent), _pnlContent);
-
+            OpenFormHelper.OpenChildForm(new ServiceForm(_pnlContent, _companyLogin), _pnlContent);
         }
 
 

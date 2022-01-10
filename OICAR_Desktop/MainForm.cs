@@ -1,4 +1,6 @@
-﻿using OICAR_Desktop.Utility;
+﻿using ClassLibrary.DAL;
+using ClassLibrary.Model;
+using OICAR_Desktop.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,44 +15,63 @@ namespace OICAR_Desktop
 {
     public partial class MainForm : Form
     {
-
-       
         
-
-        public MainForm()
+        private CompanyLogin _companyLogin;
+        private readonly UniteOfWork uow;
+       
+        public MainForm(CompanyLogin companyLogin)
         {
             InitializeComponent();
-            
+            uow = new UniteOfWork(new ModelContainer());
+            _companyLogin = companyLogin;
+            SetWelcomeMessage();
             
         }
 
-    
-
-     
-
+        private void SetWelcomeMessage()
+        {
+            
+            lblWelcomeUser.Text =$"Dobrodošli {_companyLogin.UserName} ! ";
+        }
 
         private void btnTermini_Click(object sender, EventArgs e)
         {
-
-            OpenFormHelper.OpenChildForm(new AppointmentForm(pnlChildForm),pnlChildForm);
+            HideWelcomePanel();
+            OpenFormHelper.OpenChildForm(new AppointmentForm(pnlChildForm,_companyLogin),pnlChildForm);
         }
 
+    
         private void btnKlijenti_Click(object sender, EventArgs e)
         {
-            OpenFormHelper.OpenChildForm(new ClientForm(pnlChildForm),pnlChildForm);
+            HideWelcomePanel();
+
+            OpenFormHelper.OpenChildForm(new ClientForm(pnlChildForm,_companyLogin),pnlChildForm);
         }
 
 
         private void btnPocetna_Click(object sender, EventArgs e)
         {
-            OpenFormHelper.OpenChildForm(new StartForm(pnlChildForm),pnlChildForm);
+            HideWelcomePanel();
+
+            OpenFormHelper.OpenChildForm(new StartForm(pnlChildForm,_companyLogin),pnlChildForm);
            
         }
         private void btnPostavke_Click(object sender, EventArgs e)
         {
-            OpenFormHelper.OpenChildForm(new SetupForm(pnlChildForm),pnlChildForm);
+            HideWelcomePanel();
+
+            OpenFormHelper.OpenChildForm(new SetupForm(pnlChildForm,_companyLogin),pnlChildForm);
         }
 
-        
+
+        private void HideWelcomePanel()
+        {
+            pnlWelcome.Visible = false;
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

@@ -1,0 +1,154 @@
+﻿@using ClassLibrary.Model
+@using WebApplication.Models
+@model AppointmentModel
+
+@{
+    ViewBag.Title = "ChooseService";
+    var serviceTypes = (List<SelectListItem>)ViewBag.serviceTypes;
+    var services = (List<Service>)ViewBag.services;
+    var servicesForServiceType = (List<Service>)ViewBag.servicesForServiceType;
+    var sessionServices = (ServicesSessionModel)Session["serviceSession"];
+}
+
+<div class="row">
+    <h2 class="text-center">Odabir usluge</h2>
+</div>
+<hr />
+
+<div class="container">
+    @using (Html.BeginForm("ChooseService", "Home", FormMethod.Post, new { id = "form" }))
+    {
+        <div class="row ">
+            <div class="col-sm-3">
+                @Html.Partial("_ServiceTypes", serviceTypes)
+                @*@Html.DropDownList(nameof(ServiceTypeModel.IdServiceType), serviceTypes, new { @id = "ddlServiceTypes", @class = "form-control", onchange = "document.getElementById('form').submit();" })*@
+            </div>
+            <div class="col-sm-2">
+                <input type="submit" class="btn btn-primary" id="btnSubmit" value="Odaberi uslugu" />
+            </div>
+        </div>
+
+    }
+
+    <br />
+    <div class="row">
+        @if (servicesForServiceType != null && servicesForServiceType.Count() != 0)
+        {
+            <div class="col-sm-6">
+
+                @Html.Partial("_Services", servicesForServiceType)
+
+            </div>
+        }
+        else if (services != null && services.Count() != 0)
+        {
+            <div class="col-sm-6">
+                @Html.Partial("_Services", services)
+            </div>
+        }
+        <br />
+        <div class="col-md-3 col-md-offset-1">
+            @if (sessionServices != null && sessionServices.Services.Count() != 0)
+            {
+
+                @Html.Partial("_SelectedServices", sessionServices.Services)
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="text-center ">Ukupno</h4>
+                    </div>
+                    <div class="panel-body">
+                        <h5>Predviđeno trajanje @sessionServices.GetDuration() min</h5>
+                        <h5>Ukupna cijena @sessionServices.GetSubtotal() kn</h5>
+                    </div>
+
+                    @*<div class="text-center" style="padding:10px;">
+                        @Html.ActionLink("Odaberi datum","ChooseDate","Home",null,new { @class="btn-lg btn-block btn-primary"})
+                        </div>*@
+                    <div class="text-center" style="padding:10px;">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#divAddDate">Odaberite datum</button>
+                    </div>
+                    <div id="divAddDate" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Rezervacija termina</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="formAppointment">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    @Html.LabelFor(model => model.Date, new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", @id = "txtDate" } })
+                                                    @Html.ValidationMessageFor(model => model.Date)
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    @Html.LabelFor(model => model.DodatnaNapomena, new { @class = "control-label" })
+                                                    @Html.TextBoxFor(model => model.DodatnaNapomena, new { @class = "form-control", @id = "txtDodatnaNapomena" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="btnSave" type="button" class="btn btn-success">Spremi</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Zatvori</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.13.0.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSave").click(function () {
+            AddAppointment();
+        });
+    });
+
+    function AddAppointment() {
+        var appointment = {};
+
+        appointment.Date = new Date($("#txtDate").val());
+        appointment.DodatnaNapomena = $('#txtDodatnaNapomena').val();
+
+        $.ajax({
+            async: true,
+            type: 'POST',
+            dataType: 'JSON',
+            contentType: 'application/json; charset=utf-8',
+            url: '/Home/Appointment',
+            data: JSON.stringify(appointment),
+            success: function (data) {
+                if (data.success === true) {
+                    alert(data.message);
+                    $('#divAddDate').remove();
+                    window.location = data.url;
+                }
+                else if (data.id == 'Vikend') {
+                    alert(data.message);
+                }
+                else if (data.id == 'Proslost') {
+                    alert(data.message);
+                }
+                else {
+                    alert("Odabrani termin je zauzet, molimo odaberite drugi");
+                }
+            },
+            error: function () {
+                alert("Nešto je pošlo po zlu, molimo pokušajte ponovno");
+            }
+        });
+    }
+</script>

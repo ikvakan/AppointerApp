@@ -1,5 +1,6 @@
-﻿using OICAR_Desktop.DAL;
-using OICAR_Desktop.Model;
+﻿
+using ClassLibrary.DAL;
+using ClassLibrary.Model;
 using OICAR_Desktop.Utility;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,11 @@ namespace OICAR_Desktop
     {
 
         private UniteOfWork uow;
-        OpenFormHelper ofh;
+        private CompanyLogin _companyLogin;
         private Panel _pnlContent;
-        public ClientForm(Panel pnlContent)
+        public ClientForm(Panel pnlContent,CompanyLogin companyLogin)
         {
-            
+            _companyLogin = companyLogin;
             _pnlContent= pnlContent;
             InitializeComponent();
             InitRepository();
@@ -47,7 +48,27 @@ namespace OICAR_Desktop
 
         private void PopulateGrid()
         {
-            if (uow.Clients.GetAll().Count() == 0)
+            var clients = uow.Clients.GetAll();
+            var company = uow.Company.GetCompanyForUser(_companyLogin.IdCompanyLogin);
+            var appointments = uow.Apponitments.GetAllAppointments().Where(a => a.CompanyIdCompany == company.IdCompany);
+
+            List<Client> clientsForCompany = new List<Client>();
+
+            foreach (var a in appointments)
+            {
+                foreach (var c in clients)
+                {
+                    if (a.ClientIdClient == c.IdClient)
+                    {
+                        clientsForCompany.Add(c);
+                    }
+
+                }
+            }
+            
+
+
+            if (clientsForCompany.Count() == 0)
             {
                 dataGridView.Visible = false;
                 lblInfo.Visible = true;
@@ -56,7 +77,7 @@ namespace OICAR_Desktop
             else
             {
                 dataGridView.Visible = true;
-                bindingSource.DataSource = uow.Clients.GetAll();
+                bindingSource.DataSource = clientsForCompany;
 
             }
             SetupDataGrid();
@@ -87,12 +108,8 @@ namespace OICAR_Desktop
             Client client = new Client();
             foreach (DataGridViewRow item in dataGridView.SelectedRows)
             {
-
-
                 var id = int.Parse(item.Cells[0].Value.ToString());
-
                 client = uow.Clients.SingleOrDefault(c => c.IdClient == id);
-
             }
 
             UpdateClientDialog dialog = new UpdateClientDialog(client);
@@ -103,10 +120,9 @@ namespace OICAR_Desktop
         private void Dialog_FormClosed1(object sender, FormClosedEventArgs e)
         {
 
-            //PopulateGrid();
-            OpenFormHelper.OpenChildForm(new ClientForm(_pnlContent), _pnlContent);
+            OpenFormHelper.OpenChildForm(new ClientForm(_pnlContent,_companyLogin), _pnlContent);
         }
-
+         
         private void btnDeleteClient_Click(object sender, EventArgs e)
         {
 
@@ -117,7 +133,7 @@ namespace OICAR_Desktop
                 var id = int.Parse(item.Cells[0].Value.ToString());
 
                 Client client = uow.Clients.SingleOrDefault(c => c.IdClient == id);
-
+                ClientLogin clientLogin = uow.ClientLogin.GetAll().FirstOrDefault(cl => cl.IdClientLogin == client.ClientLoginsIdClientLogin);
                 List<Appointment> appointments = uow.Apponitments.Find(a => a.ClientIdClient == client.IdClient).ToList();
                 if (appointments.Count() > 0)
                 {
@@ -127,6 +143,7 @@ namespace OICAR_Desktop
                         {
                             uow.Apponitments.Delete(app);
                             uow.Clients.Delete(client);
+                            uow.ClientLogin.Delete(clientLogin);
 
                         }
                         uow.SaveChanges();

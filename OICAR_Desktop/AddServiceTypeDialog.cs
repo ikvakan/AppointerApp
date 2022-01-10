@@ -1,5 +1,6 @@
-﻿using OICAR_Desktop.DAL;
-using OICAR_Desktop.Model;
+﻿
+using ClassLibrary.DAL;
+using ClassLibrary.Model;
 using OICAR_Desktop.Utility;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,11 @@ namespace OICAR_Desktop
     {
 
         private UniteOfWork uow;
-        public AddServiceTypeDialog()
+
+        private CompanyLogin _companyLogin;
+        public AddServiceTypeDialog(CompanyLogin companyLogin)
         {
+            _companyLogin = companyLogin;
             InitializeComponent();
             InitRepository();
             InitValidationDataSource();
@@ -40,7 +44,9 @@ namespace OICAR_Desktop
             {
                 try
                 {
-                    uow.ServiceTypes.Insert(new Service_Type { Name = txtServiceType.Text });
+                    var company = uow.Company.GetCompanyForUser(_companyLogin.IdCompanyLogin);
+                    
+                    uow.ServiceTypes.Insert(new Service_Type { Name = txtServiceType.Text ,CompanyIdCompany=company.IdCompany});
                     uow.SaveChanges();
 
                 }
@@ -55,7 +61,7 @@ namespace OICAR_Desktop
 
         private bool IsValid()
         {
-            //FormValidationHelper<Service_TypeMD> fvh = new FormValidationHelper<Service_TypeMD>();
+            
             HelperMethods helper = new HelperMethods();
             return helper.IsValidForm<Service_TypeMD>(service_TypeMDBindingSource);
             

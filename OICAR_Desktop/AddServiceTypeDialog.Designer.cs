@@ -58,7 +58,7 @@ namespace OICAR_Desktop
             // 
             // service_TypeMDBindingSource
             // 
-            this.service_TypeMDBindingSource.DataSource = typeof(OICAR_Desktop.Model.Service_TypeMD);
+//            this.service_TypeMDBindingSource.DataSource = typeof(ClassLibrary.Model.Service_TypeMD);
             // 
             // btnSave
             // 

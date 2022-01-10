@@ -1,5 +1,7 @@
-﻿using OICAR_Desktop.DAL;
-using OICAR_Desktop.Model;
+﻿
+using ClassLibrary.DAL;
+using ClassLibrary.DAL.Interfaces;
+using ClassLibrary.Model;
 using OICAR_Desktop.Utility;
 using System;
 using System.Collections.Generic;
@@ -17,10 +19,11 @@ namespace OICAR_Desktop
     {
       
         private UniteOfWork uow;
-        
+        private CompanyLogin _companyLogin;
 
-        public AddServiceForm()
+        public AddServiceForm(CompanyLogin companyLogin)
         {
+            _companyLogin = companyLogin;
             InitializeComponent();
             InitRepository();
             InitValidation();
@@ -37,7 +40,9 @@ namespace OICAR_Desktop
 
         private void FillServiceType()
         {
-            cbServiceType.DataSource = uow.ServiceTypes.GetAll();
+            var company = uow.Company.GetCompanyForUser(_companyLogin.IdCompanyLogin);
+
+            cbServiceType.DataSource = uow.ServiceTypes.GetServiceTypeForCompany(company.IdCompany);
             cbServiceType.DisplayMember = nameof(Service_Type.Name);
             cbServiceType.ValueMember = nameof(Service_Type.IdServiceType);
         }
@@ -54,7 +59,7 @@ namespace OICAR_Desktop
 
         private void btnAddServiceType_Click(object sender, EventArgs e)
         {
-            AddServiceTypeDialog dialog = new AddServiceTypeDialog();
+            AddServiceTypeDialog dialog = new AddServiceTypeDialog(_companyLogin);
             dialog.Show();
             dialog.FormClosed += Dialog_FormClosed;
         }
@@ -70,19 +75,19 @@ namespace OICAR_Desktop
             if (IsValid())
             {
 
-                Service service = GetService();
 
-                uow.Services.Insert(service);
 
                 try
                 {
+                    Service service = GetService();
+                    uow.Services.Insert(service);
                     uow.SaveChanges();
                     ResetForm();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
 
-                    ErrorMessage();
+                    ErrorMessage(ex);
                 }
 
             }
@@ -98,26 +103,27 @@ namespace OICAR_Desktop
             txtPrice.Text = "";
             txtDesciption.Text = "";
             cbDuration.SelectedIndex = 0;
-            //cbServiceType.SelectedIndex = 0;
+            
         }
 
         private Service GetService()
         {
+            //var company= uow.Company.GetCompanyForUser(_companyLogin.IdCompanyLogin);
+
             Service service = new Service();
             service.Name = txtName.Text;
             service.Price = int.Parse(txtPrice.Text);
             service.Duration = (int)cbDuration.SelectedItem;
             var serviceType = cbServiceType.SelectedItem as Service_Type;
-
-            service.Service_Type = serviceType;
+            service.Service_TypeIdServiceType = serviceType.IdServiceType;
             service.Description = txtDesciption.Text;
-
+            
             return service;
         }
 
-        private void ErrorMessage()
+        private void ErrorMessage(Exception ex)
         {
-            MessageBox.Show("Greška kod unosa.");
+            MessageBox.Show("Greška kod unosa. \n" + ex.Message);
         }
 
         private bool IsValid()

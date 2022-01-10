@@ -57,6 +57,15 @@ namespace OICAR_Desktop.Utility
 
             pnl.Controls.Add(control);
         }
+
+
+        public static DialogResult DialogHelper(string message,string title,MessageBoxButtons messageBoxButtons)
+        {
+
+            MessageBoxButtons buttons = messageBoxButtons;
+            DialogResult result = MessageBox.Show(message, title, buttons);
+            return result;
+        }
       
     }
 }

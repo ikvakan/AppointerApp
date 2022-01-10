@@ -12,6 +12,10 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -45,6 +49,9 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web.Helpers.Crypto, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Web.Helpers.Crypto.3.2.3\lib\net40\System.Web.Helpers.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -95,6 +102,18 @@
     <Compile Include="AddWorkerForm.Designer.cs">
       <DependentUpon>AddWorkerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CompanyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompanyForm.Designer.cs">
+      <DependentUpon>CompanyForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ServiceForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,49 +132,11 @@
     <Compile Include="UpdateWorkerForm.Designer.cs">
       <DependentUpon>UpdateWorkerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\AddServiceControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\AddServiceControl.Designer.cs">
-      <DependentUpon>AddServiceControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\AddWorkerControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\AddWorkerControl.Designer.cs">
-      <DependentUpon>AddWorkerControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\CompanyControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\CompanyControl.Designer.cs">
-      <DependentUpon>CompanyControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\Repositories\ApponitmentRepository.cs" />
-    <Compile Include="DAL\Interfaces\IApponitmentRepository.cs" />
-    <Compile Include="DAL\Interfaces\IRepository.cs" />
-    <Compile Include="DAL\Interfaces\IServiceRepository.cs" />
-    <Compile Include="DAL\Interfaces\IServiceTypeRepository.cs" />
-    <Compile Include="DAL\Interfaces\IStatusRepository.cs" />
-    <Compile Include="DAL\UniteOfWork\IUniteOfWork.cs" />
-    <Compile Include="DAL\Interfaces\IWorkerRepository.cs" />
-    <Compile Include="DAL\Repositories\ServiceTypeRepository.cs" />
-    <Compile Include="DAL\Repositories\StatusRepository.cs" />
-    <Compile Include="DAL\Repositories\WorkerRepository.cs" />
-    <Compile Include="DAL\Repositories\Repository.cs" />
-    <Compile Include="DAL\Repositories\ServiceRepository.cs" />
-    <Compile Include="DAL\UniteOfWork\UniteOfWork.cs" />
-    <Compile Include="Model\Appointment.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="AppointmentForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AppointmentForm.Designer.cs">
       <DependentUpon>AppointmentForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Client.cs">
-      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="ClientForm.cs">
       <SubType>Form</SubType>
@@ -163,40 +144,11 @@
     <Compile Include="ClientForm.Designer.cs">
       <DependentUpon>ClientForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DAL\Repositories\ClientRepository.cs" />
-    <Compile Include="DAL\Interfaces\IClientRepository.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Model\GetAppointmentForDataGrid_Result.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Model.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Model.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Model.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Metadata.cs" />
-    <Compile Include="Model\PartialClasses.cs" />
-    <Compile Include="Model\Service.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Service_Type.cs">
-      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -217,9 +169,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Model\Status.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="UpdateAppointmentDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -232,40 +181,19 @@
     <Compile Include="UpdateClientDialog.Designer.cs">
       <DependentUpon>UpdateClientDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ServiceControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\ServiceControl.Designer.cs">
-      <DependentUpon>ServiceControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UpdateServiceControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\UpdateServiceControl.Designer.cs">
-      <DependentUpon>UpdateServiceControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\WorkerControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\WorkerControl.Designer.cs">
-      <DependentUpon>WorkerControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\WorkingHourControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\WorkingHourControl.Designer.cs">
-      <DependentUpon>WorkingHourControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Utility\HelperMethods.cs" />
     <Compile Include="Utility\OpenFormHelper.cs" />
-    <Compile Include="Model\Worker.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="WorkerForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="WorkerForm.Designer.cs">
       <DependentUpon>WorkerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WorkingHoursForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WorkingHoursForm.Designer.cs">
+      <DependentUpon>WorkingHoursForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="AddAppointmentDialog.resx">
       <DependentUpon>AddAppointmentDialog.cs</DependentUpon>
@@ -291,6 +219,12 @@
     <EmbeddedResource Include="ClientForm.resx">
       <DependentUpon>ClientForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CompanyForm.resx">
+      <DependentUpon>CompanyForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ServiceForm.resx">
       <DependentUpon>ServiceForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -299,15 +233,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UpdateWorkerForm.resx">
       <DependentUpon>UpdateWorkerForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\AddServiceControl.resx">
-      <DependentUpon>AddServiceControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\AddWorkerControl.resx">
-      <DependentUpon>AddWorkerControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\CompanyControl.resx">
-      <DependentUpon>CompanyControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -329,29 +254,14 @@
     <EmbeddedResource Include="UpdateClientDialog.resx">
       <DependentUpon>UpdateClientDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\ServiceControl.resx">
-      <DependentUpon>ServiceControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\UpdateServiceControl.resx">
-      <DependentUpon>UpdateServiceControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\WorkerControl.resx">
-      <DependentUpon>WorkerControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\WorkingHourControl.resx">
-      <DependentUpon>WorkingHourControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="WorkerForm.resx">
       <DependentUpon>WorkerForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EntityDeploy Include="Model\Model.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="Model\Model.edmx.diagram">
-      <DependentUpon>Model.edmx</DependentUpon>
-    </None>
+    <EmbeddedResource Include="WorkingHoursForm.resx">
+      <DependentUpon>WorkingHoursForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\ClassLibrary.Model.CompanyMD.datasource" />
     <None Include="Properties\DataSources\OICAR_Desktop.Model.Appointment.datasource" />
     <None Include="Properties\DataSources\OICAR_Desktop.Model.Client.datasource" />
     <None Include="Properties\DataSources\OICAR_Desktop.Model.ClientMD.datasource" />
@@ -374,22 +284,23 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model\Model.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model.Context.cs</LastGenOutput>
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Content>
-    <Content Include="Model\Model.edmx.sql" />
-    <Content Include="Model\Model.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model.cs</LastGenOutput>
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Content>
     <None Include="Resources\appointer_logo.png" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj">
+      <Project>{98665c5b-56f6-40aa-9244-cc0d2c72e151}</Project>
+      <Name>ClassLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Content Include="Images\no_image.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

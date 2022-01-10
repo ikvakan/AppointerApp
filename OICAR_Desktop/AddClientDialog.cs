@@ -1,5 +1,6 @@
-﻿using OICAR_Desktop.DAL;
-using OICAR_Desktop.Model;
+﻿using ClassLibrary.DAL;
+using ClassLibrary.Model;
+
 using OICAR_Desktop.Utility;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,13 @@ namespace OICAR_Desktop
                 {
                     Client client = GetClient();
                     uow.Clients.Insert(client);
+                    client.ClientLogins = new ClientLogin
+                    {
+                        UserName = "korisnik",
+                        Password = "123"
+                    };
+                    
+                    
 
                     uow.SaveChanges();
                 }
@@ -92,7 +100,7 @@ namespace OICAR_Desktop
 
         private bool IsValid()
         {
-            //FormValidationHelper<ClientMD> fvh = new FormValidationHelper<ClientMD>();
+            
             HelperMethods helper = new HelperMethods();
             return helper.IsValidForm<ClientMD>(bindingSourceClientMD);
             

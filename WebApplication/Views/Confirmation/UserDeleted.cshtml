@@ -1,0 +1,23 @@
+﻿@model string
+@{
+    ViewBag.Title = "UserDeleted";
+}
+
+<h2 class="text-center">Korisnik obrisan</h2>
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    
+</head>
+<body>
+    <div>
+        <div class="container alert">
+            <p class="alert alert-success text-center">Korisnik <b>@Model</b> uspješno obrisan. </p>
+            <p>Kliknite @Html.ActionLink("ovdje", "Index", "Home") za nastavak.</p>
+        </div>
+    </div>
+</body>
+</html>
+

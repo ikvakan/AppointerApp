@@ -1,0 +1,141 @@
+﻿@model WebApplication.Models.UserAccountModel
+
+@{
+    ViewBag.Title = "GetAccountData";
+}
+
+<div class="text-center">
+    <h2>Upravljanje osobnim podacima</h2>
+</div>
+
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+
+        <div class="form-horizontal col-md-6 ">
+
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Client.IdClient)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Client.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Client.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Client.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Client.Surname, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Client.Surname, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Client.Surname, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Client.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Client.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Client.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Client.Contact, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Client.Contact, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Client.Contact, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Client.Adress, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Client.Adress, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Client.Adress, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Client.OIB, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Client.OIB, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Client.OIB, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Client.City, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Client.City, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Client.City, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+          
+        </div>
+
+
+        <div class="form-horizontal col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <label>Postavke privatnosti</label>
+
+                </div>
+                <div class="panel-body" style="padding:30px;">
+                    @Html.HiddenFor(model => model.IdClientGDPR)
+                    <div class="form-group">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(model => model.AuthorizePersonlaInformation)
+                            @Html.LabelFor(model => model.AuthorizePersonlaInformation, "Pristup osobnim podacima")
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(model => model.TargetedAdvertisement)
+                            @Html.LabelFor(model => model.TargetedAdvertisement, "Ciljane reklame")
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(model => model.AccessDeviceData)
+                            @Html.LabelFor(model => model.AccessDeviceData, "Pristup podacima na uređaju")
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="submit" value="Spremi" class="btn btn-primary btn-block " />
+                </div>
+                <div class="col-md-6">
+                    @*<input type="submit" value="Obriši račun" class="btn btn-danger btn-block" />*@
+                    @Html.ActionLink("Obriši račun","DeleteAccount","ManageAccount",new {clientId=Model.Client.IdClient, clientGDPRId=Model.IdClientGDPR },new {@class= "btn btn-danger btn-block" })
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

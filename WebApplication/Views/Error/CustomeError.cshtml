@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddUserError</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="container alert">
+
+        <div class="alert alert-warning text-center">
+            <h2>@ViewBag.message</h2>
+        </div>
+        @Html.ActionLink("<< Povratak na početnu stranicu", "Index", "Home")
+    </div>
+</body>
+</html>

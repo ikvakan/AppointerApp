@@ -37,9 +37,13 @@ namespace OICAR_Desktop
             this.btnTermini = new System.Windows.Forms.Button();
             this.btnPocetna = new System.Windows.Forms.Button();
             this.pnlChildForm = new System.Windows.Forms.Panel();
+            this.pnlWelcome = new System.Windows.Forms.Panel();
+            this.lblWelcomeUser = new System.Windows.Forms.Label();
             this.pnlSideBar.SuspendLayout();
             this.pnlLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.pnlChildForm.SuspendLayout();
+            this.pnlWelcome.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlSideBar
@@ -134,11 +138,32 @@ namespace OICAR_Desktop
             // pnlChildForm
             // 
             this.pnlChildForm.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pnlChildForm.Controls.Add(this.pnlWelcome);
             this.pnlChildForm.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlChildForm.Location = new System.Drawing.Point(205, 0);
             this.pnlChildForm.Name = "pnlChildForm";
             this.pnlChildForm.Size = new System.Drawing.Size(875, 663);
             this.pnlChildForm.TabIndex = 1;
+            // 
+            // pnlWelcome
+            // 
+            this.pnlWelcome.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.pnlWelcome.Controls.Add(this.lblWelcomeUser);
+            this.pnlWelcome.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlWelcome.Location = new System.Drawing.Point(0, 0);
+            this.pnlWelcome.Name = "pnlWelcome";
+            this.pnlWelcome.Size = new System.Drawing.Size(875, 100);
+            this.pnlWelcome.TabIndex = 18;
+            // 
+            // lblWelcomeUser
+            // 
+            this.lblWelcomeUser.AutoSize = true;
+            this.lblWelcomeUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblWelcomeUser.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lblWelcomeUser.Location = new System.Drawing.Point(28, 39);
+            this.lblWelcomeUser.Name = "lblWelcomeUser";
+            this.lblWelcomeUser.Size = new System.Drawing.Size(0, 24);
+            this.lblWelcomeUser.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -150,9 +175,13 @@ namespace OICAR_Desktop
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.pnlSideBar.ResumeLayout(false);
             this.pnlLogo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.pnlChildForm.ResumeLayout(false);
+            this.pnlWelcome.ResumeLayout(false);
+            this.pnlWelcome.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -167,6 +196,8 @@ namespace OICAR_Desktop
         private System.Windows.Forms.Panel pnlLogo;
         private System.Windows.Forms.Panel pnlChildForm;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Panel pnlWelcome;
+        private System.Windows.Forms.Label lblWelcomeUser;
     }
 }
 

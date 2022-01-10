@@ -1,14 +1,11 @@
-﻿using OICAR_Desktop.DAL;
-using OICAR_Desktop.Model;
+﻿
+using ClassLibrary.DAL;
+using ClassLibrary.Model;
 using OICAR_Desktop.Utility;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OICAR_Desktop
@@ -17,12 +14,11 @@ namespace OICAR_Desktop
     {
 
         private UniteOfWork uow;
-        private OpenFormHelper openForm;
-        private Panel _panel;
-        public StartForm(Panel panel)
+        private CompanyLogin _companyLogin;
+        public StartForm(Panel panel,CompanyLogin companyLogin)
         {
-            _panel = panel;
-            openForm = new OpenFormHelper();
+           
+            _companyLogin = companyLogin;
             InitializeComponent();
             InitiRepository();
             InitCalendar();
@@ -50,7 +46,7 @@ namespace OICAR_Desktop
         private void AddAppointmentForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Close();
-            OpenFormHelper.OpenChildForm(new StartForm(_panel), _panel);
+            //OpenFormHelper.OpenChildForm(new StartForm(_panel), _panel);
         }
 
       
@@ -59,13 +55,19 @@ namespace OICAR_Desktop
         {
             var date = e.Start.ToShortDateString();
             
-            PopulateGridByDate(DateTime.Parse(date));
+
+            PopulateGridByDate(date);
             
         }
 
-        private void PopulateGridByDate(DateTime date)
+        private void PopulateGridByDate(string date)
         {
-            if (uow.Apponitments.GetAppointmentsByDate(date).Count() == 0)
+
+            var company = uow.Company.GetCompanyForUser(_companyLogin.IdCompanyLogin);
+
+            var appointmentsForCompany = uow.Apponitments.GetAll().Where(a => a.CompanyIdCompany ==company.IdCompany && a.Date.ToShortDateString()==date).ToList();
+
+            if (appointmentsForCompany.Count() ==0)
             {
                 dataGridView.Visible = false;
                 lblInfo.Visible = true;
@@ -81,12 +83,10 @@ namespace OICAR_Desktop
                 dt.Columns.Add("Datum");
                 dt.Columns.Add("Vrijeme");
                 dt.Columns.Add("Trajanje");
-                dt.Columns.Add("Usluga");
-                dt.Columns.Add("Djelatnik");
-                dt.Columns.Add("Status");
+                
 
 
-                foreach (var item in uow.Apponitments.GetAppointmentsByDate(date))
+                foreach (var item in appointmentsForCompany)
                 {
 
 
@@ -96,10 +96,7 @@ namespace OICAR_Desktop
                     dr["Klijent"] = item.Client.FullName;
                     dr["Datum"] = item.Date.ToShortDateString();
                     dr["Vrijeme"] = item.Time.ToShortTimeString();
-                    dr["Trajanje"] = item.Duration;
-                    dr["Usluga"] = item.Service.Name;
-                    dr["Djelatnik"] = item.Worker.FullName;
-                    dr["Status"] = item.Status.Name;
+                    dr["Trajanje"] = item.Duration + " min";
                     dt.Rows.Add(dr);
 
                 }
@@ -111,6 +108,8 @@ namespace OICAR_Desktop
                 SetupDataGrid();
             }
         }
+
+
         private void SetupDataGrid()
         {
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;

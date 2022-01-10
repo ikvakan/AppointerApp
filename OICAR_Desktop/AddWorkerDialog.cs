@@ -1,5 +1,6 @@
-﻿using OICAR_Desktop.DAL;
-using OICAR_Desktop.Model;
+﻿
+using ClassLibrary.DAL;
+using ClassLibrary.Model;
 using OICAR_Desktop.Utility;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace OICAR_Desktop
 {
     public partial class AddWorkerDialog : Form
     {
-        private ModelContainer db;
+        
         private UniteOfWork uow;
         public AddWorkerDialog()
         {
@@ -89,8 +90,6 @@ namespace OICAR_Desktop
             return helper.IsValidForm<WorkerMD>(workerMDBindingSource);
         }
 
-   
-
-       
+ 
     }
 }

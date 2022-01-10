@@ -1,0 +1,43 @@
+﻿
+@model IEnumerable<ClassLibrary.Model.Service>
+
+
+
+    <table class="table ">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Naziv</th>
+                <th scope="col">Cijena</th>
+                <th scope="col">Trajanje</th>
+                <th scope="col">Usluga</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            if (item != null)
+            {
+                <tbody>
+                    <tr>
+                        <td>@(String.IsNullOrEmpty(item.Name) ? "" : item.Name) </td>
+                        <td>@(String.IsNullOrEmpty(item.Price.ToString()) ? 0 : item.Price) kn</td>
+                        <td>@(String.IsNullOrEmpty(item.Duration.ToString()) ? 0 : item.Duration) min</td>
+                        <td>@(String.IsNullOrEmpty(item.Service_Type.Name) ? "" : item.Service_Type.Name)</td>
+                        <td>
+                            @Html.ActionLink("Odaberi", "ServiceSession", "Home", new { idService = item.IdService, idServiceType = item.Service_TypeIdServiceType }, new { @class = "btn btn-success" })
+                        </td>
+                    </tr>
+                </tbody>
+            }
+            else
+            {
+                <tbody>
+                    <tr>
+                        <td colspan="4" class="text-center">nema podataka</td>
+                    </tr>
+                </tbody>
+            }
+        }
+    </table>
+
+
+

@@ -166,7 +166,7 @@ namespace OICAR_Desktop
             // 
             // serviceBindingSource
             // 
-            this.serviceBindingSource.DataSource = typeof(OICAR_Desktop.Model.Service);
+//            this.serviceBindingSource.DataSource = typeof(ClassLibrary.Model.Service);
             // 
             // lbServices
             // 

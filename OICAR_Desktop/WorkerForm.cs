@@ -1,5 +1,6 @@
-﻿using OICAR_Desktop.DAL;
-using OICAR_Desktop.Model;
+﻿
+using ClassLibrary.DAL;
+using ClassLibrary.Model;
 using OICAR_Desktop.Utility;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,11 @@ namespace OICAR_Desktop
 
         private Panel _pnlContent;
         private UniteOfWork uow;
-        public WorkerForm(Panel pnlContent)
+        private CompanyLogin _companyLogin;
+        public WorkerForm(Panel pnlContent, CompanyLogin companyLogin)
         {
             _pnlContent = pnlContent;
+            _companyLogin = companyLogin;
             InitializeComponent();
             InitiRepository();
             PopulateGrid();
@@ -39,7 +42,10 @@ namespace OICAR_Desktop
 
         private void PopulateGrid()
         {
-            if (uow.Workers.GetAll().Count() == 0)
+            var company = uow.Company.GetCompanyForUser(_companyLogin.IdCompanyLogin);
+            var workers = uow.Workers.GetWorkersForCompany(company.IdCompany);
+
+            if (workers.Count() == 0)
             {
                 DisableGrid();
             }
@@ -56,7 +62,7 @@ namespace OICAR_Desktop
 
 
 
-                foreach (var item in uow.Workers.GetAll())
+                foreach (var item in workers)
                 {
 
                     DataRow dr = dt.NewRow();
@@ -112,9 +118,9 @@ namespace OICAR_Desktop
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            var company = uow.Company.GetCompanyForUser(_companyLogin.IdCompanyLogin);
 
-
-            AddWorkerForm form = new AddWorkerForm();
+            AddWorkerForm form = new AddWorkerForm(company);
             OpenFormHelper.OpenChildForm(form, _pnlContent);
 
         }
@@ -126,17 +132,18 @@ namespace OICAR_Desktop
                 var id = int.Parse(item.Cells[0].Value.ToString());
 
                 var worker = uow.Workers.GetById(id);
-                UpdateWorkerForm form = new UpdateWorkerForm(worker);
+                UpdateWorkerForm form = new UpdateWorkerForm(worker, _companyLogin);
                 form.FormClosed += Form_FormClosed;
-                OpenFormHelper.OpenChildForm(form,_pnlContent);
+                OpenFormHelper.OpenChildForm(form, _pnlContent);
             }
 
         }
 
         private void Form_FormClosed(object sender, FormClosedEventArgs e)
         {
-            OpenFormHelper.OpenChildForm(new WorkerForm(_pnlContent),_pnlContent);
+            OpenFormHelper.OpenChildForm(new WorkerForm(_pnlContent, _companyLogin), _pnlContent);
         }
+
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
@@ -146,49 +153,62 @@ namespace OICAR_Desktop
 
                 var id = int.Parse(item.Cells[0].Value.ToString());
 
-                Worker worker = uow.Workers.GetById(id);
+                var worker = uow.Workers.GetById(id);
 
-                List<Appointment> appointments = uow.Apponitments.Find(a => a.WorkerIdWorker == worker.IdWorker).ToList();
-                if (appointments.Count() > 0)
+
+
+                DialogResult deleteWorkerResult = HelperMethods.DialogHelper("Želite li obrisati djelatnika ?", "Potvrda brisanja.", MessageBoxButtons.YesNo);
+
+                if (deleteWorkerResult == DialogResult.Yes)
                 {
-                    if (DialogResult.Yes == MessageBox.Show("Djelatnik ima već zakazane termin, želite li obrisati i sve termine ?", "Potvrda brisanja.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                    try
                     {
-                        foreach (var app in appointments)
-                        {
-                            uow.Apponitments.Delete(app);
 
-                        }
                         uow.Workers.Delete(worker);
 
+                        uow.SaveChanges();
+                        PopulateGrid();
 
+                    }
+                    catch (EntitySqlException ex)
+                    {
+
+                        MessageBox.Show("Greška kod brisanja.\n" + ex.Message);
                     }
                 }
 
-                else if (DialogResult.Yes == MessageBox.Show("Želite li obrisati djelatnika ?", "Potvrda brisanja.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
-                {
-                    uow.Workers.Delete(worker);
+                //    List<Appointment> appointments = uow.Apponitments.Find(a => a.WorkerIdWorker == worker.IdWorker).ToList();
+                //    if (appointments.Count() > 0)
+                //    {
+                //        if (DialogResult.Yes == MessageBox.Show("Djelatnik ima već zakazane termin, želite li obrisati i sve termine ?", "Potvrda brisanja.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                //        {
+                //            foreach (var app in appointments)
+                //            {
+                //                uow.Apponitments.Delete(app);
 
-                }
+                //            }
+                //            uow.Workers.Delete(worker);
+
+
+                //        }
+                //    }
+
+                //    else if (DialogResult.Yes == MessageBox.Show("Želite li obrisati djelatnika ?", "Potvrda brisanja.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                //    {
+                //        uow.Workers.Delete(worker);
+
+                //    }
+
+
+                //}
+
+
 
 
             }
-
-            try
-            {
-                uow.SaveChanges();
-                PopulateGrid();
-
-            }
-            catch (EntitySqlException ex)
-            {
-
-                MessageBox.Show("Greška kod brisanja." +  ex.Message);
-            }
-
-
-
         }
 
 
     }
+
 }

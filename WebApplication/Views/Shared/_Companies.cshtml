@@ -1,0 +1,44 @@
+﻿@using ClassLibrary.Model
+@model ClassLibrary.Model.Company
+
+@{
+
+
+}
+
+
+
+
+<div class="col-md-6 mb-4" style="padding:10px;">
+    <div class="panel panel-default" style="width: 25rem;">
+        @if (!String.IsNullOrEmpty(Model.PicPath))
+        {
+
+            <img class="img-responsive  center-block " style="padding:10px;"
+                 src=@Url.Action("RecieveImage","Images",new {imagePath=Model.PicPath })
+                 alt="Company_image">
+
+        }
+        else
+        {
+            <img class="img-responsive  center-block " style="padding-top:10px;"
+                 src="~/Images/no_image.jpg"
+                 alt="Company_image">
+
+        }
+
+
+        <div class="panel-body  ">
+            <h5 class="panel-title text-center"><b>@Model.Name</b></h5>
+            <h6 class="panel-subtitle mb-2 text-muted text-center">@Model.Adress, @Model.City</h6>
+            <h6 class="panel-subtitle  text-center">@Model.Category.CategoryName</h6>
+            <div class="text-center">
+                @Html.ActionLink("Rezerviraj termin", "CompanyOverview", new { idCompany = Model.IdCompany }, new { @class = "btn  btn-success " })
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+

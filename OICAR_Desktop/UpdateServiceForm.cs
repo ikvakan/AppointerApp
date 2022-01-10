@@ -1,5 +1,6 @@
-﻿using OICAR_Desktop.DAL;
-using OICAR_Desktop.Model;
+﻿
+using ClassLibrary.DAL;
+using ClassLibrary.Model;
 using OICAR_Desktop.Utility;
 using System;
 using System.Collections.Generic;
@@ -24,11 +25,13 @@ namespace OICAR_Desktop
 
         private Service _service;
         private Service_Type _serviceType;
+        private Company _company;
 
-        public UpdateServiceForm(Service service, Service_Type service_Type)
+        public UpdateServiceForm(Service service, Service_Type service_Type,Company company)
         {
             // _pnlContent = content;
             //pnlContent = new Panel();
+            _company = company;
             _service = service;
             _serviceType = service_Type;
             InitializeComponent();
@@ -63,7 +66,7 @@ namespace OICAR_Desktop
 
         private void FillServiceType()
         {
-            cbServiceType.DataSource = uow.ServiceTypes.GetAll();
+            cbServiceType.DataSource = uow.ServiceTypes.GetServiceTypeForCompany(_company.IdCompany);
             cbServiceType.DisplayMember = nameof(Service_Type.Name);
             cbServiceType.ValueMember = nameof(Service_Type.IdServiceType);
 
@@ -79,6 +82,7 @@ namespace OICAR_Desktop
         private void InitRepository()
         {
             uow = new UniteOfWork(new ModelContainer());
+            
         }
 
 
@@ -110,15 +114,15 @@ namespace OICAR_Desktop
         {
             Service service = new Service();
             service.IdService = _service.IdService;
-            Service_Type service_Type = cbServiceType.SelectedItem as Service_Type;
-            service.Service_TypeIdServiceType = service_Type.IdServiceType;
             service.Name = txtName.Text;
             service.Price = int.Parse(txtPrice.Text);
             service.Duration = (int)cbDuration.SelectedItem;
-            var serviceType = cbServiceType.SelectedItem as Service_Type;
-
-            service.Service_Type = serviceType;
             service.Description = txtDesciption.Text;
+            var service_Type = cbServiceType.SelectedItem as Service_Type;
+            service.Service_TypeIdServiceType = service_Type.IdServiceType;
+            
+            
+
 
             return service;
         }

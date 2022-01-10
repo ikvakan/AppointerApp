@@ -156,7 +156,7 @@ namespace OICAR_Desktop
             // 
             // bindingSourceClientMD
             // 
-            this.bindingSourceClientMD.DataSource = typeof(OICAR_Desktop.Model.ClientMD);
+            //this.bindingSourceClientMD.DataSource = typeof(ClassLibrary.Model.ClientMD);
             // 
             // txtAdress
             // 

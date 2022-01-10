@@ -16,7 +16,17 @@ namespace OICAR_Desktop
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            
+            LoginForm loginForm = new LoginForm();
+            Application.Run(loginForm);
+
+            if (loginForm.UserConfirmed)
+            {
+
+                Application.Run(new MainForm(loginForm.CompanyLogin));
+            }
+            
+            
         }
     }
 }

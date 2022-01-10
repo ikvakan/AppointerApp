@@ -91,7 +91,7 @@ namespace OICAR_Desktop
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(141, 44);
             this.btnUpdate.TabIndex = 0;
-            this.btnUpdate.Text = "Ažuriraj";
+            this.btnUpdate.Text = "Pogledaj";
             this.btnUpdate.UseVisualStyleBackColor = false;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 

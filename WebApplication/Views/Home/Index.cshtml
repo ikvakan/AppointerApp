@@ -1,0 +1,130 @@
+﻿@if (Session["userName"] == null)
+{
+    <html>
+    <body style="text-align: center;">
+        <div class="container" style="margin-top:150px;">
+            <h1>
+                Posvetite se svojim klijentima
+                <br />
+                Rezervaciju termina prepustite nama!
+            </h1>
+            <br />
+            <h4>
+                Appointer App će Vas osloboditi suvišne administracije,
+                <br />
+                uštedjeti vrijeme koje možete posvetiti klijentu i tako postići visoku kvalitetu usluge i veće prihode
+            </h4>
+            <br />
+            @Html.ActionLink("Registriraj se(korisnik)", "RegisterUser", "Account", null, htmlAttributes: new { @class = "btn btn-primary btn-lg" })
+            @Html.ActionLink("Registriraj tvrtku", "RegisterPartner", "Account", null, htmlAttributes: new { @class = "btn btn-primary btn-lg" })
+            <hr />
+            <h4>
+                Ako ste već registrirani, prijavite se
+            </h4>
+            <br />
+            @Html.ActionLink("Prijavi se", "Login", "Account", null, htmlAttributes: new { @class = "btn btn-primary btn-lg" })
+        </div>
+        <img src="~/Images/ReservationImg.jpg" style="margin-top: 20px;" />
+    </body>
+</html>
+}
+
+
+
+@*<script src="~/lib/main.js"></script>
+<link href="~/lib/main.css" rel="stylesheet" />*@
+
+<script src="~/lib/main.min.js"></script>
+<link href="~/lib/main.min.css" rel="stylesheet" />
+
+
+
+
+<div class="row">
+    <div class="col">
+        <div id='calendar'></div>
+    </div>
+</div>
+
+@*<script src="~/Scripts/popupConsent.min.js"></script>*@
+<script src="~/Scripts/popupConsent.js"></script>
+<link href="~/Content/popupConsent.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        _generateCalender();
+    });
+
+    function _generateCalender() {
+        var url = '@Url.Action("GetAppointments", "Home")';
+        var events = [];
+
+        var calendarEl = document.getElementById('calendar');
+        $.ajax({
+            url: url,
+            method: 'GET',
+            dataType: 'json',
+            success: function (result) {
+                $.each(result, function () {
+                    events.push({
+                        title: this.title,
+                        start: this.start
+                    });
+                })
+            }
+        }).then(function () {
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                firstDay: 1,
+                displayEventTime: false,
+                selectable: true,
+                local: 'hr',
+                height: 700,
+                //events: [
+                //    {
+                //        title: 'Muško šišanje',
+                //        start: '2021-11-09 10:00:00',
+                //        end: '2021-11-09 10:30:00'
+                //    }
+                //],
+                events: events
+            });
+            calendar.render();
+            }
+        );
+    }
+
+    var cookieConsentOptions = {
+       
+        textPopup: 'Ova stranica koristi kolačiće za pružanje boljeg korisničkog iskustva i funkcionalnosti. Saznajte više <a href="https://gdprinformer.com/hr/izjava-o-privatnosti">ovdje </a>.',
+        textButtonAccept: 'Prihvati sve',
+        textButtonConfigure: 'Podesi',
+        textButtonSave: 'Spremi promjene',
+        authorization: [
+            {
+                textAuthorization: 'Pristup osobnim podacima',
+                nameCookieAuthorization: 'autorisePersonalInformation'
+            },
+            {
+                textAuthorization: 'Omogućite personalizirane oglase i sadržaj',
+                nameCookieAuthorization: 'targetedAdvertising'
+            },
+            {
+                textAuthorization: 'Spremanje i pristup podacima na uređaju',
+                nameCookieAuthorization: 'cookieConsent'
+            }
+        ]
+    }
+    popupConsent(cookieConsentOptions);
+
+
+
+</script>
+
+
+   
+

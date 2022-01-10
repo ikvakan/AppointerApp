@@ -1,5 +1,6 @@
-﻿using OICAR_Desktop.DAL;
-using OICAR_Desktop.Model;
+﻿
+using ClassLibrary.DAL;
+using ClassLibrary.Model;
 using OICAR_Desktop.Utility;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,12 @@ namespace OICAR_Desktop
     public partial class AppointmentForm : Form
     {
         private UniteOfWork uow;
-
-       // private OpenFormHelper ofh;
-
         private Panel _childForm;
-        public AppointmentForm(Panel childForm)
+        private CompanyLogin _companyLogin;
+        public AppointmentForm(Panel childForm,CompanyLogin companyLogin)
         {
-           // ofh = new OpenFormHelper();
+            // ofh = new OpenFormHelper();
+            _companyLogin = companyLogin;
             _childForm = childForm;
             InitializeComponent();
             InitRepository();
@@ -56,7 +56,10 @@ namespace OICAR_Desktop
         private void PopulateGrid()
         {
             lblStatus.Text = "Svi termini";
-            if (uow.Apponitments.GetAll().Count() == 0)
+
+            var appointments = uow.Apponitments.GetAllAppointments().Where(a => a.CompanyIdCompany == _companyLogin.IdCompanyLogin).ToList();
+
+            if (appointments.Count()==0)
             {
                 dataGridView.Visible = false;
                 lblInfo.Visible = true;
@@ -65,7 +68,7 @@ namespace OICAR_Desktop
             }
             else
             {
-
+                
                 dataGridView.Visible = true;
                 lblInfo.Visible = false;
 
@@ -76,12 +79,12 @@ namespace OICAR_Desktop
                 dt.Columns.Add("Datum");
                 dt.Columns.Add("Vrijeme");
                 dt.Columns.Add("Trajanje");
-                dt.Columns.Add("Usluga");
-                dt.Columns.Add("Djelatnik");
+                //dt.Columns.Add("Usluga");
+                dt.Columns.Add("Firma");
                 dt.Columns.Add("Status");
 
 
-                foreach (var item in uow.Apponitments.GetAll())
+                foreach (var item in appointments)
                 {
 
                     DataRow dr = dt.NewRow();
@@ -91,8 +94,8 @@ namespace OICAR_Desktop
                     dr["Datum"] = item.Date.ToShortDateString();
                     dr["Vrijeme"] = item.Time.ToShortTimeString();
                     dr["Trajanje"] = item.Duration;
-                    dr["Usluga"] = item.Service.Name;
-                    dr["Djelatnik"] = item.Worker.FullName;
+                    //dr["Usluga"] = item.Service.Name;
+                    dr["Firma"] = item.Company.Name;
                     dr["Status"] = item.Status.Name;
                     dt.Rows.Add(dr);
 
@@ -127,11 +130,16 @@ namespace OICAR_Desktop
             dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
         }
 
-
+        private void cbAppointment_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Status status = (Status)cbAppointment.SelectedItem;
+            lblStatus.Text = status.Name;
+            PopulateGridByStatus(status.Name);
+        }
         private void PopulateGridByStatus(string name)
         {
 
-            if (uow.Apponitments.GetAppointmentsByStatus(name).Count() == 0)
+            if (uow.Apponitments.GetAppointmentsByStatusForCompany(name,_companyLogin.IdCompanyLogin).Count() == 0)
             {
                 dataGridView.Visible = false;
                 lblInfo.Visible = true;
@@ -150,12 +158,11 @@ namespace OICAR_Desktop
                 dt.Columns.Add("Datum");
                 dt.Columns.Add("Vrijeme");
                 dt.Columns.Add("Trajanje");
-                dt.Columns.Add("Usluga");
-                dt.Columns.Add("Djelatnik");
+                dt.Columns.Add("Firma");
                 dt.Columns.Add("Status");
 
 
-                foreach (var item in uow.Apponitments.GetAppointmentsByStatus(name))
+                foreach (var item in uow.Apponitments.GetAppointmentsByStatusForCompany(name,_companyLogin.IdCompanyLogin))
                 {
 
 
@@ -166,8 +173,8 @@ namespace OICAR_Desktop
                     dr["Datum"] = item.Date.ToShortDateString();
                     dr["Vrijeme"] = item.Time.ToShortTimeString();
                     dr["Trajanje"] = item.Duration;
-                    dr["Usluga"] = item.Service.Name;
-                    dr["Djelatnik"] = item.Worker.FullName;
+                    //dr["Usluga"] = item.Service.Name;
+                    dr["Firma"] = item.Company.Name;
                     dr["Status"] = item.Status.Name;
                     dt.Rows.Add(dr);
 
@@ -196,7 +203,9 @@ namespace OICAR_Desktop
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            if (uow.Apponitments.GetAll().Count()==0)
+            var appointments = uow.Apponitments.GetAllAppointments().Where(a => a.CompanyIdCompany == _companyLogin.IdCompanyLogin).ToList();
+
+            if ( appointments.Count()== 0)
             {
                 return;
             }
@@ -206,14 +215,12 @@ namespace OICAR_Desktop
             foreach (DataGridViewRow item in dataGridView.SelectedRows)
             {
 
-
                 var id = int.Parse(item.Cells[0].Value.ToString());
-
                 appointment = uow.Apponitments.SingleOrDefault(p => p.IdAppointment == id);
 
             }
 
-            UpdateAppointmentDialog dialog = new UpdateAppointmentDialog(appointment);
+            UpdateAppointmentDialog dialog = new UpdateAppointmentDialog(appointment,_companyLogin);
             dialog.Show();
             dialog.FormClosed += Dialog_FormClosed;
 
@@ -225,7 +232,7 @@ namespace OICAR_Desktop
         {
 
             Close();
-            OpenFormHelper.OpenChildForm(new AppointmentForm(_childForm), _childForm);
+            OpenFormHelper.OpenChildForm(new AppointmentForm(_childForm,_companyLogin), _childForm);
 
 
         }
@@ -258,12 +265,7 @@ namespace OICAR_Desktop
 
         }
 
-        private void cbAppointment_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Status status = (Status)cbAppointment.SelectedItem;
-            lblStatus.Text = status.Name;
-            PopulateGridByStatus(status.Name);
-        }
+       
     }
 }
 

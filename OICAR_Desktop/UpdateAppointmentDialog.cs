@@ -1,5 +1,6 @@
-﻿using OICAR_Desktop.DAL;
-using OICAR_Desktop.Model;
+﻿
+using ClassLibrary.DAL;
+using ClassLibrary.Model;
 using OICAR_Desktop.Utility;
 using System;
 using System.Collections.Generic;
@@ -18,11 +19,12 @@ namespace OICAR_Desktop
         private Appointment _appointment;
 
         private UniteOfWork uow;
+        private CompanyLogin _companyLogin;
 
       
-        public UpdateAppointmentDialog(Appointment appointment)
+        public UpdateAppointmentDialog(Appointment appointment,CompanyLogin companyLogin)
         {
-           
+            _companyLogin = companyLogin;
             _appointment= appointment;
             InitializeComponent();
             InitiRepository();
@@ -30,10 +32,17 @@ namespace OICAR_Desktop
             FillDuration();
             FillTime();
             FillDate();
-            PopulateClients();
-            PopulateWorkers();
-            PopulateService();
+            FillRemark();
+            //PopulateClients();
+            //PopulateWorkers();
+            
         }
+
+        private void FillRemark()
+        {
+            txtRemark.Text = _appointment.Remark;
+        }
+
         private void InitiRepository()
         {
             uow = new UniteOfWork(new ModelContainer());
@@ -48,53 +57,39 @@ namespace OICAR_Desktop
             dtpTime.Value = _appointment.Time;
         }
 
-        private void PopulateService()
-        {
-            cbService.DataSource = uow.Services.GetAll().ToList();
-            cbService.DisplayMember = nameof(Service.Name);
-            cbService.ValueMember = nameof(Service.IdService);
-
-            foreach (Service item in cbService.Items)
-            {
-                if (item.Name==_appointment.Service.Name)
-                {
-                    cbService.SelectedItem = item;
-                }
-            }
-        }
-
-        private void PopulateWorkers()
-        {
-            List<Worker> workers = uow.Workers.GetAll().ToList();
-            cbWorker.DataSource = workers;
-            cbWorker.ValueMember = nameof(Worker.IdWorker);
-            cbWorker.DisplayMember = nameof(Worker.FullName);
+        //private void PopulateWorkers()
+        //{
+            
+        //    List<Worker> workers = uow.Workers.GetAll().Where(w=>w.CompanyIdCompany==_companyLogin.IdCompanyLogin).ToList();
+        //    cbWorker.DataSource = workers;
+        //    cbWorker.ValueMember = nameof(Worker.IdWorker);
+        //    cbWorker.DisplayMember = nameof(Worker.FullName);
 
 
-            foreach (Worker item in cbWorker.Items)
-            {
-                if (item.FullName== _appointment.Worker.FullName)
-                {
-                    cbWorker.SelectedItem = item;
-                }
-            }
-        }
+        //    //foreach (Worker item in cbWorker.Items)
+        //    //{
+        //    //    if (item.FullName == _appointment.Company.Worker.FirstOrDefault(w=>w.FullName))
+        //    //    {
+        //    //        cbWorker.SelectedItem = item;
+        //    //    }
+        //    //}
+        //}
 
-        private void PopulateClients()
-        {
-            List<Client> clients = uow.Clients.GetAll().ToList();
-            cbClients.DataSource = clients;
-            cbClients.ValueMember = nameof(Client.IdClient);
-            cbClients.DisplayMember = nameof(Client.FullName);
+        //private void PopulateClients()
+        //{
+        //    List<Client> clients = uow.Clients.GetAll().ToList();
+        //    cbClients.DataSource = clients;
+        //    cbClients.ValueMember = nameof(Client.IdClient);
+        //    cbClients.DisplayMember = nameof(Client.FullName);
 
-            foreach (Client item in cbClients.Items)
-            {
-                if (item.FullName == _appointment.Client.FullName)
-                {
-                    cbClients.SelectedItem = item;
-                }
-            }
-        }
+        //    foreach (Client item in cbClients.Items)
+        //    {
+        //        if (item.FullName == _appointment.Client.FullName)
+        //        {
+        //            cbClients.SelectedItem = item;
+        //        }
+        //    }
+        //}
 
         private void FillDuration()
         {
@@ -149,7 +144,7 @@ namespace OICAR_Desktop
             catch (Exception ex)
             {
 
-                MessageBox.Show("Greška" + ex.Message);
+                MessageBox.Show("Greška" + ex.InnerException);
             }
 
             Close();
@@ -161,27 +156,15 @@ namespace OICAR_Desktop
         private Appointment GetAppointment()
         {
             Appointment appointment = new Appointment();
-            Client client = (Client)cbClients.SelectedItem;
-            Service service = (Service)cbService.SelectedItem;
             Status status = (Status)cbStatus.SelectedItem;
-            Worker worker = (Worker)cbWorker.SelectedItem;
-
             appointment.IdAppointment = _appointment.IdAppointment;
-            appointment.ClientIdClient = client.IdClient;
-            appointment.WorkerIdWorker = worker.IdWorker;
-            appointment.ServiceIdService = service.IdService;
+            appointment.ClientIdClient = _appointment.ClientIdClient;
+            appointment.CompanyIdCompany = _appointment.CompanyIdCompany;                    
             appointment.StatusIdStatus = status.IdStatus;
             appointment.Date = DateTime.Parse(dtpDate.Value.ToShortDateString());
-            appointment.Client= (Client)cbClients.SelectedItem; 
             appointment.Time = DateTime.Parse(dtpTime.Value.ToShortTimeString());
-            appointment.Service = (Service)cbService.SelectedItem;
-            appointment.Status = (Status)cbStatus.SelectedItem;
             appointment.Duration = (int)cbDuration.SelectedItem;
-            appointment.Worker = (Worker)cbWorker.SelectedItem;
             appointment.Remark = txtRemark.Text;
-
-     
-
 
             return appointment;
         }

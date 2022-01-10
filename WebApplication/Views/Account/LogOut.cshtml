@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "LogOut";
+}
+
+<h2 class="text-center">Odjava</h2>
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Odjava</title>
+</head>
+<body>
+    <div>
+        <div class="container alert">
+            <p class="alert alert-success text-center">Korisnik <b>@ViewBag.LogOutMessage</b> uspješno odjavljen. </p>
+            <p>Kliknite @Html.ActionLink("ovdje","Index","Home") za nastavak.</p>
+        </div>
+    </div>
+</body>
+</html>
+
